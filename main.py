@@ -254,7 +254,6 @@ def generate_questions(job_data, question_type="behavioral", count=5, difficulty
         
         questions = parse_questions_response(response.text)
         if questions:
-            print(f"✅ Generated {len(questions)} questions successfully!")
             return questions
         else:
             print("❌ Failed to parse questions from response")
@@ -344,7 +343,7 @@ def interview(job_data, behavioral_question_count=1, technical_question_count=1,
                 answer.append(record_voice("answer.wav",20))
         
         evaluate_answer(questions,answer,job_data,difficulty)
-        # return answer
+        
     except Exception as e:
         print(f"Error:{e}")
         return None
