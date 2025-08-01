@@ -1,4 +1,5 @@
 # Core dependencies
+pip==25.2
 streamlit==1.47.1
 google-generativeai==0.5.2
 
@@ -19,7 +20,7 @@ ffmpeg-python==0.2.0
 # tiktoken>=0.3.1
 
 # Environment and utilities
-python-dotenv==1.0.0
+# python-dotenv==1.0.0
 # scipy==1.11.4
 
 # Fix potential conflicts
