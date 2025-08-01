@@ -1,76 +1,83 @@
 # AI Interview Coach
 
-**AI Interview Coach** is a voice-based interview simulator that runs in the terminal. It helps you prepare for job interviews by generating tailored questions, recording your spoken answers, and providing structured feedback. Questions are personalized based on the job description and your preferred difficulty level.
+**Your personal AI-powered mock interview assistant**, designed to help you prepare confidently for real-world job interviews.
 
-This project simulates real interview dynamics by combining job-specific question generation, voice interaction, and automated answer evaluation.
+🔗 **[Try the App]()**
 
----
-
-## What This Project Does
-
-- Analyzes job descriptions to extract relevant information.
-- Generates customized **behavioral**, **technical**, and **situational** questions.
-- Converts questions into speech using text-to-speech.
-- Records your spoken answers and transcribes them using speech-to-text.
-- Evaluates your answers using AI and provides actionable feedback.
-
-Difficulty levels (`easy`, `medium`, `hard`) are included to adapt to different experience levels and help users gradually build confidence.
+This app simulates an actual interview environment by asking role-specific questions based on a job description you provide. You can speak your answers out loud, get real-time transcription, and receive AI-generated feedback to improve your structure, clarity, and confidence.
 
 ---
 
-## Key Learnings
+## Project Goals
 
-### Speech-to-Text with Whisper
-- Used OpenAI Whisper to transcribe user responses.
-- Handled real-time audio recording and audio file processing.
+AI Interview Coach was built to address a common problem: interview anxiety and lack of preparation. Many candidates struggle to structure answers or get flustered under pressure.
 
-### Text-to-Speech with gTTS
-- Used `gTTS` to convert generated questions into spoken prompts.
-- Enabled real-time playback to simulate an actual interview experience.
+This app helps you:
 
-### Content Generation and Evaluation with Google Gemini
-- Used Gemini (gemini-2.5-flash) for:
-  - Parsing and analyzing job descriptions.
-  - Generating structured interview questions.
-  - Providing detailed feedback based on user's spoken answers.
-
-### Audio Recording with sounddevice
-- Used `sounddevice` and `scipy.io.wavfile` to record and process user voice inputs.
+- Practice in private before facing real panels  
+- Learn how to tackle behavioral questions effectively  
+- Receive structured, repeatable feedback  
+- Build confidence by speaking answers aloud  
 
 ---
 
-## Workflow
+## Features
 
-1. **Input Job Details**  
-   The user provides the job title and description.
+### Job Description–Driven Interviews
+Paste any job description — technical or non-technical — and the app generates tailored behavioral and technical questions aligned with the role.
 
-2. **Job Analysis**  
-   The system uses Gemini to extract job-specific information such as skills, responsibilities, industry, and role level.
+### Voice-First Experience
+Speak your answers aloud using your microphone. The app transcribes your speech in real-time using **Whisper** and responds to you via audio using **gTTS**.
 
-3. **Question Generation**  
-   Behavioral, technical, and situational questions are generated based on the job data and difficulty level selected by the user.
+### AI Feedback in Real Time
+After you answer, **Gemini** evaluates your response and gives feedback on clarity, relevance, structure, and overall delivery — just like a real interviewer might.
 
-4. **Voice Interaction**  
-   Questions are converted to audio and played. The user's verbal response is recorded and transcribed.
+### Difficulty Modes
+Choose **Beginner**, **Intermediate**, or **Advanced**. The complexity of questions scales with your selection, making the app suitable for all experience levels.
 
-5. **Answer Evaluation**  
-   The transcribed response is evaluated by Gemini for clarity, relevance, structure, and use of examples. Feedback includes score, strengths, areas for improvement, and suggested keywords.
+### Streamlit-Powered UI
+Fast-loading, mobile-friendly interface with minimal clicks, simple navigation, and smooth interaction between voice, feedback, and controls.
+
+---
+
+## UI Preview
+
+> *(Add screenshots here)*
+
+---
+
+## 🛠 Tech Stack
+
+| Component        | Tech Used                |
+|------------------|--------------------------|
+| Frontend UI      | Streamlit                |
+| Voice Input      | sounddevice + Whisper    |
+| Speech Output    | gTTS                     |
+| AI Engine        | Gemini API               |
+| Core Logic       | Python                   |
+| Deployment       | Streamlit Cloud          |
 
 ---
 
 ## Future Scope
 
-- Add a user interface using web frameworks like React or Streamlit.
-- Visualize performance trends using graphs and summaries.
-- Store and track user interview history for improvement over time.
+- Visualize performance trends using graphs and summaries  
+- Store and track user interview history for improvement over time  
 
 ---
 
-## Technologies Used
+## Key Learnings
 
-- Python
-- Google Generative AI (Gemini API)
-- OpenAI Whisper
-- gTTS (Google Text-to-Speech)
-- sounddevice, scipy
-- dotenv, regex, JSON
+### Voice Integration in Web Apps
+Learned to integrate real-time voice recording using `sounddevice`, and send the audio to OpenAI’s **Whisper** for seamless transcription.
+
+### Prompt Engineering for Dual Roles & Difficulty Scaling
+Refined prompt structures for two key tasks: generating interview questions and evaluating user responses. Also learned to dynamically scale difficulty using prompt tweaks.
+
+### Streamlit UI Implementation
+Built a clean, voice-first interface using **Streamlit**, ensuring smooth interaction across devices.
+
+### Gemini API Integration
+Successfully integrated **Google Gemini** to generate questions and evaluate responses. Learned to handle token limits, structure prompts effectively, and parse replies into actionable feedback.
+
+
