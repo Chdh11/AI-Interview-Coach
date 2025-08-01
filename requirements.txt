@@ -1,12 +1,29 @@
+# Core dependencies
 streamlit==1.47.1
-python==3.11.5
-openai-whisper
-whisper @ git+https://github.com/openai/whisper.git  
-gtts==2.5.1
-sounddevice==0.4.6
-numpy==1.26.4
 google-generativeai==0.5.2
+
+# Audio and ML dependencies
+openai-whisper==20231117
 torch>=2.0.0
 torchaudio>=2.0.0
+
+# Audio processing
+sounddevice==0.4.6
+numpy==1.26.4
+
+# Text-to-speech  
+gtts==2.5.1
+
+# Additional dependencies that whisper needs
+ffmpeg-python==0.2.0
+tiktoken>=0.3.1
+
+# Environment and utilities
+python-dotenv==1.0.0
+scipy==1.11.4
+
+# Fix potential conflicts
+setuptools-rust
+wheel
 
 
