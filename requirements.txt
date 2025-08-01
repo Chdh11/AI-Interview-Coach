@@ -1,10 +1,12 @@
-streamlit==1.35.0
-whisper @ git+https://github.com/openai/whisper.git
+streamlit==1.47.1
+python==3.11.5
+openai-whisper
+whisper @ git+https://github.com/openai/whisper.git  
 gtts==2.5.1
 sounddevice==0.4.6
 numpy==1.26.4
 google-generativeai==0.5.2
 torch>=2.0.0
 torchaudio>=2.0.0
-openai-whisper
-python=3.11.5
+
+
