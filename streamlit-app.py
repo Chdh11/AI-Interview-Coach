@@ -308,7 +308,6 @@ def generate_questions(job_data, question_type="behavioral", count=5, difficulty
         return None
 
 def record_audio_streamlit(duration=30):
-    """Record audio using streamlit-webrtc or simple recording"""
     try:
         st.info(f"🎤 Recording for {duration} seconds... Speak now!")
         
