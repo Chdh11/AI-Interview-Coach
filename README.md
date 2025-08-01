@@ -1,5 +1,11 @@
 # AI Interview Coach
 
+[![Deployed on Streamlit](https://img.shields.io/badge/Deployed%20on-Streamlit-ff4b4b?logo=streamlit)](https://ai-interview-coach.streamlit.app)
+[![Built with Python](https://img.shields.io/badge/Built%20with-Python-blue?logo=python)](https://www.python.org/)
+[![Uses Whisper](https://img.shields.io/badge/Speech%20to%20Text-Whisper-blueviolet)](https://github.com/openai/whisper)
+[![AI Engine: Gemini](https://img.shields.io/badge/AI%20Engine-Gemini-orange)](https://deepmind.google/technologies/gemini/)
+[![Project Status](https://img.shields.io/badge/Status-Complete-brightgreen)]()
+
 Your personal AI-powered mock interview assistant, designed to help you prepare confidently for real-world job interviews.
 
 🔗 **[Try the App]()**
@@ -8,7 +14,7 @@ This app simulates an actual interview environment by asking role-specific quest
 
 ---
 
-## Project Goals
+## ☕️ Project Goals
 
 AI Interview Coach was built to address a common problem: interview anxiety and lack of preparation. Many candidates struggle to structure answers or get flustered under pressure.
 
@@ -21,7 +27,7 @@ This app helps you:
 
 ---
 
-## Features
+## 💬 Features
 
 - **Job Description–Driven Interviews**: Paste any job description — technical or non-technical — and the app generates tailored behavioral and technical questions aligned with the role.
 
@@ -35,13 +41,13 @@ This app helps you:
 
 ---
 
-## UI Preview
+## 💻 UI Preview
 
 > *(Add screenshots here)*
 
 ---
 
-## Tech Stack
+## 🛠 Tech Stack
 
 | Component        | Tech Used                |
 |------------------|--------------------------|
@@ -54,14 +60,7 @@ This app helps you:
 
 ---
 
-## Future Scope
-
-- Visualize performance trends using graphs and summaries  
-- Store and track user interview history for improvement over time  
-
----
-
-## Key Learnings
+## 🧠 Key Learnings
 
 - **Voice Integration in Web Apps**: Learned to integrate real-time voice recording using `sounddevice`, and send the audio to OpenAI’s **Whisper** for seamless transcription.
 
@@ -71,4 +70,11 @@ This app helps you:
 
 - **Gemini API Integration**: Successfully integrated **Google Gemini** to generate questions and evaluate responses. Learned to handle token limits, structure prompts effectively, and parse replies into actionable feedback.
 
+---
 
+## 📈 Future Scope
+
+- Visualize performance trends using graphs and summaries  
+- Store and track user interview history for improvement over time  
+
+---
