@@ -3,28 +3,21 @@ pip==25.2
 streamlit==1.47.1
 google-generativeai==0.5.2
 
-# Audio and ML dependencies
-openai-whisper==20231117
-torch>=2.0.0
-torchaudio>=2.0.0
+# Audio and ML dependencies - Fixed versions for Python 3.13 compatibility
+openai-whisper==20240930
+torch==2.5.1
+torchaudio==2.5.1
 
 # Audio processing
 sounddevice==0.4.6
 numpy==1.26.4
 
-# Text-to-speech  
+# Text-to-speech
 gtts==2.5.1
 
-# Additional dependencies that whisper needs
+# Additional dependencies
 ffmpeg-python==0.2.0
-# tiktoken>=0.3.1
+scipy==1.11.4
 
-# Environment and utilities
-# python-dotenv==1.0.0
-# scipy==1.11.4
-
-# Fix potential conflicts
-# setuptools-rust
-# wheel
-
-
+# Environment utilities
+python-dotenv==1.0.0
