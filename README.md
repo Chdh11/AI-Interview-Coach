@@ -25,13 +25,13 @@ This app helps you:
 
 - **Job Description–Driven Interviews**: Paste any job description — technical or non-technical — and the app generates tailored behavioral and technical questions aligned with the role.
 
--**Voice-First Experience**: Speak your answers aloud using your microphone. The app transcribes your speech in real-time using **Whisper** and responds to you via audio using **gTTS**.
+- **Voice-First Experience**: Speak your answers aloud using your microphone. The app transcribes your speech in real-time using **Whisper** and responds to you via audio using **gTTS**.
 
-**AI Feedback in Real Time**: After you answer, **Gemini** evaluates your response and gives feedback on clarity, relevance, structure, and overall delivery — just like a real interviewer might.
+- **AI Feedback in Real Time**: After you answer, **Gemini** evaluates your response and gives feedback on clarity, relevance, structure, and overall delivery — just like a real interviewer might.
 
-**Difficulty Modes**: Choose **Beginner**, **Intermediate**, or **Advanced**. The complexity of questions scales with your selection, making the app suitable for all experience levels.
+- **Difficulty Modes**: Choose **Beginner**, **Intermediate**, or **Advanced**. The complexity of questions scales with your selection, making the app suitable for all experience levels.
 
-**Streamlit-Powered UI**: Fast-loading, mobile-friendly interface with minimal clicks, simple navigation, and smooth interaction between voice, feedback, and controls.
+- **Streamlit-Powered UI**: Fast-loading, mobile-friendly interface with minimal clicks, simple navigation, and smooth interaction between voice, feedback, and controls.
 
 ---
 
@@ -63,12 +63,12 @@ This app helps you:
 
 ## Key Learnings
 
-**Voice Integration in Web Apps**: Learned to integrate real-time voice recording using `sounddevice`, and send the audio to OpenAI’s **Whisper** for seamless transcription.
+- **Voice Integration in Web Apps**: Learned to integrate real-time voice recording using `sounddevice`, and send the audio to OpenAI’s **Whisper** for seamless transcription.
 
-**Prompt Engineering for Dual Roles & Difficulty Scaling**: Refined prompt structures for two key tasks: generating interview questions and evaluating user responses. Also learned to dynamically scale difficulty using prompt tweaks.
+- **Prompt Engineering for Dual Roles & Difficulty Scaling**: Refined prompt structures for two key tasks: generating interview questions and evaluating user responses. Also learned to dynamically scale difficulty using prompt tweaks.
 
-**Streamlit UI Implementation**: Built a clean, voice-first interface using **Streamlit**, ensuring smooth interaction across devices.
+- **Streamlit UI Implementation**: Built a clean, voice-first interface using **Streamlit**, ensuring smooth interaction across devices.
 
-**Gemini API Integration**: Successfully integrated **Google Gemini** to generate questions and evaluate responses. Learned to handle token limits, structure prompts effectively, and parse replies into actionable feedback.
+- **Gemini API Integration**: Successfully integrated **Google Gemini** to generate questions and evaluate responses. Learned to handle token limits, structure prompts effectively, and parse replies into actionable feedback.
 
 
