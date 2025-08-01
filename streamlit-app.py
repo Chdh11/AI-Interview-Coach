@@ -14,7 +14,7 @@ import time
 from io import BytesIO
 
 load_dotenv()
-api_key = os.getenv('GEMINI_API_KEY')
+# api_key = os.getenv('GEMINI_API_KEY')
 
 st.set_page_config(
     page_title="AI Interview Coach",
@@ -234,7 +234,7 @@ def extract_json_from_response(json_content):
         st.error(f"JSON parsing error: {e}")
         return None
 
-def job_description_analysis(job_description, job_profile):
+def job_description_analysis(api_key, job_description, job_profile):
     try:
         genai.configure(api_key=api_key)
         model = genai.GenerativeModel('gemini-2.5-flash')
@@ -278,7 +278,7 @@ def parse_questions_response(response_text):
         st.error(f"Error parsing questions: {e}")
         return None
 
-def generate_questions(job_data, question_type="behavioral", count=5, difficulty="easy"):
+def generate_questions(api_key,job_data, question_type="behavioral", count=5, difficulty="easy"):
     try:
         genai.configure(api_key=api_key)
         model = genai.GenerativeModel('gemini-2.5-flash')
@@ -342,7 +342,7 @@ def record_audio_streamlit(duration=30):
         st.error(f"Error recording audio: {e}")
         return None
 
-def evaluate_answer(question, answer, job_data, difficulty="easy"):
+def evaluate_answer(api_key, question, answer, job_data, difficulty="easy"):
     try:
         genai.configure(api_key=api_key)
         model = genai.GenerativeModel('gemini-2.5-flash')
@@ -404,254 +404,317 @@ Evaluate based on:
         st.error(f"Error evaluating answer: {e}")
         return None
 
-
-def main():
-    st.markdown('<h1 class="main-header">AI Interview Coach</h1>', unsafe_allow_html=True)
+def api_setup():
+    """Method 2: API Key as Initial Setup Step"""
+    if 'api_key_validated' not in st.session_state:
+        st.session_state.api_key_validated = False
+    if 'user_api_key' not in st.session_state:
+        st.session_state.user_api_key = ""
     
-    # Sidebar for navigation and progress
-    with st.sidebar:
-        st.markdown("### Interview Progress")
+    if not st.session_state.api_key_validated:
+        st.markdown("### 🔑 Welcome! Let's get started")
+        st.markdown("To use this AI Interview Coach, you'll need a Google Gemini API key.")
         
-        steps = [
-            "Job Description",
-            "Analysis", 
-            "Setup Questions",
-            "Interview",
-            "Evaluation"
-        ]
+        # Instructions
+        with st.expander("📖 How to get your API key"):
+            st.markdown("""
+            1. Go to [Google AI Studio](https://ai.google.dev/)
+            2. Click "Create API Key"
+            3. Copy the key and paste it below
+            4. Keep it safe - don't share it with anyone!
+            """)
         
-        for i, step in enumerate(steps, 1):
-            if i < st.session_state.current_step:
-                st.markdown(f"✅ {step}")
-            elif i == st.session_state.current_step:
-                st.markdown(f"🔄 **{step}**")
-            else:
-                st.markdown(f"⏳ {step}")
-    
-    # Step 1: Job Description Input
-    if st.session_state.current_step == 1:
-        st.markdown('<div class="step-header">Step 1: Enter Job Details</div>', unsafe_allow_html=True)
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            job_profile = st.text_input("Job Profile/Title", placeholder="e.g., Senior Software Engineer")
-        
-        with col2:
-            difficulty = st.selectbox("Difficulty Level", ["easy", "medium", "hard"])
-        
-        job_description = st.text_area(
-            "Job Description", 
-            height=200,
-            placeholder="Paste the complete job description here..."
+        api_key = st.text_input(
+            "Paste your Gemini API Key here:",
+            type="password",
+            placeholder="AIza..."
         )
         
-        if st.button("Analyze Job Description", type="primary"):
-            if job_profile and job_description:
-                job_data = job_description_analysis(job_description, job_profile)
-                if job_data:
-                    st.session_state.job_data = job_data
-                    st.session_state.difficulty = difficulty
-                    st.session_state.current_step = 2
+        # col1, col2 = st.columns(2)
+        
+        # with col1:
+        if st.button("🔐 Validate & Continue", type="primary"):
+            if api_key:
+                try:
+                    genai.configure(api_key=api_key)
+                    model = genai.GenerativeModel('gemini-2.5-flash')
+                    # Quick test
+                    response = model.generate_content("Hello")
+                    
+                    st.session_state.user_api_key = api_key
+                    st.session_state.api_key_validated = True
+                    st.success("✅ API Key validated! Redirecting...")
                     st.rerun()
+                        
+                except Exception as e:
+                    st.error(f"❌ Invalid API Key: {str(e)}")
             else:
-                st.warning("Please fill in both job profile and job description.")
-    
-    # Step 2: Show Analysis
-    elif st.session_state.current_step == 2:
-        st.markdown('<div class="step-header">Step 2: Job Analysis Results</div>', unsafe_allow_html=True)
+                st.warning("Please paste your API key")
         
-        if st.session_state.job_data:
-            job_data = st.session_state.job_data
+        # with col2:
+        #     if st.button("🧪 Use Demo Mode"):
+        #         st.info("Demo mode selected - limited functionality")
+        #         st.session_state.api_key_validated = True
+        #         st.session_state.user_api_key = "DEMO_MODE"
+        #         st.rerun()
+        
+        # Don't show the rest of the app
+        return None
+    
+    else:
+        return st.session_state.user_api_key
+
+def main():
+    api_key = api_setup()
+    if(api_key):
+        st.markdown('<h1 class="main-header">AI Interview Coach</h1>', unsafe_allow_html=True)
+        
+        # Sidebar for navigation and progress
+        with st.sidebar:
+            st.markdown("### Interview Progress")
             
-            # st.markdown('<div class="job-analysis-box">', unsafe_allow_html=True)
+            steps = [
+                "Job Description",
+                "Analysis", 
+                "Setup Questions",
+                "Interview",
+                "Evaluation"
+            ]
             
-            col1, col2, col3, col4= st.columns(4)
+            for i, step in enumerate(steps, 1):
+                if i < st.session_state.current_step:
+                    st.markdown(f"✅ {step}")
+                elif i == st.session_state.current_step:
+                    st.markdown(f"🔄 **{step}**")
+                else:
+                    st.markdown(f"⏳ {step}")
+        
+        # Step 1: Job Description Input
+        if st.session_state.current_step == 1:
+            st.markdown('<div class="step-header">Step 1: Enter Job Details</div>', unsafe_allow_html=True)
+            
+            col1, col2 = st.columns(2)
             
             with col1:
-                st.subheader("Basic Info")
-                st.write(f"**Title:** {job_data.get('job_title', 'N/A')}")
-                st.write(f"**Seniority:** {job_data.get('seniority_level', 'N/A')}")
-                st.write(f"**Industry:** {job_data.get('industry', 'N/A')}")
-                st.write(f"**Experience:** {job_data.get('experience_years', 'N/A')}")
+                job_profile = st.text_input("Job Profile/Title", placeholder="e.g., Senior Software Engineer")
+            
             with col2:
-                st.subheader("Technical Skills")
-                for skill in job_data.get('technical_skills', []):
-                    st.write(f"• {skill}")
-            with col3:    
-                st.subheader("Soft Skills")  
-                for skill in job_data.get('soft_skills', []):
-                    st.write(f"• {skill}")
-            with col4:
-                st.subheader("Key Responsibilities")
-                for resp in job_data.get('key_responsibilities', []):
-                    st.write(f"• {resp}")
+                difficulty = st.selectbox("Difficulty Level", ["easy", "medium", "hard"])
             
-            st.markdown('</div>', unsafe_allow_html=True)
+            job_description = st.text_area(
+                "Job Description", 
+                height=200,
+                placeholder="Paste the complete job description here..."
+            )
             
-            if st.button("✅ Looks Good! Setup Interview", type="primary"):
-                st.session_state.current_step = 3
-                st.rerun()
-    
-    # Step 3: Question Setup
-    elif st.session_state.current_step == 3:
-        st.markdown('<div class="step-header">Step 3: Configure Interview Questions</div>', unsafe_allow_html=True)
-        
-        col1, col2, col3 = st.columns(3)
-        
-        with col1:
-            behavioral_count = st.number_input("Behavioral Questions", min_value=0, max_value=10, value=2)
-        
-        with col2:
-            technical_count = st.number_input("Technical Questions", min_value=0, max_value=10, value=2)
-        
-        with col3:
-            situational_count = st.number_input("Situational Questions", min_value=0, max_value=10, value=1)
-        
-        total_questions = behavioral_count + technical_count + situational_count
-        
-        if total_questions > 0:
-            st.info(f"Total questions: {total_questions} (Estimated time: {total_questions * 2} minutes)")
-            
-            if st.button("Generate Questions & Start Interview", type="primary"):
-                # Generate all questions
-                all_questions = []
-                question_types = []
-                
-                if behavioral_count > 0:
-                    behavioral_q = generate_questions(
-                        st.session_state.job_data, "behavioral", 
-                        behavioral_count, st.session_state.difficulty
-                    )
-                    if behavioral_q:
-                        all_questions.extend(behavioral_q)
-                        question_types.extend(["behavioral"] * len(behavioral_q))
-                
-                if technical_count > 0:
-                    technical_q = generate_questions(
-                        st.session_state.job_data, "technical", 
-                        technical_count, st.session_state.difficulty
-                    )
-                    if technical_q:
-                        all_questions.extend(technical_q)
-                        question_types.extend(["technical"] * len(technical_q))
-                
-                if situational_count > 0:
-                    situational_q = generate_questions(
-                        st.session_state.job_data, "situational", 
-                        situational_count, st.session_state.difficulty
-                    )
-                    if situational_q:
-                        all_questions.extend(situational_q)
-                        question_types.extend(["situational"] * len(situational_q))
-                
-                if all_questions:
-                    st.session_state.questions = all_questions
-                    st.session_state.question_types = question_types
-                    st.session_state.answers = []
-                    st.session_state.current_question_index = 0
-                    st.session_state.current_step = 4
-                    st.rerun()
-        else:
-            st.warning("Please select at least one type of question.")
-    
-    # Step 4: Interview Process
-    elif st.session_state.current_step == 4:
-        if st.session_state.current_question_index < len(st.session_state.questions):
-            current_q_index = st.session_state.current_question_index
-            current_question = st.session_state.questions[current_q_index]
-            question_type = st.session_state.question_types[current_q_index]
-            
-            st.markdown("### 🎤 Interview in Progress")
-            
-            progress = (current_q_index + 1) / len(st.session_state.questions)
-            st.progress(progress)
-            st.write(f"Question {current_q_index + 1} of {len(st.session_state.questions)} ({question_type.title()})")
-
-            st.markdown(f"### ❓ {current_question}")
-
-            col1, col2 = st.columns([2, 1])
-            
-            with col1:
-               
-                if len(st.session_state.answers) <= current_q_index:
-                  
-                    if st.button(f"🎤 Record Answer (30 seconds)", key=f"record_{current_q_index}"):
-                        answer = record_audio_streamlit(30)
-                        if answer:
-                            st.session_state.answers.append(answer)
-                            st.session_state.recording_complete = True
-                            st.rerun()  
-                
-                if len(st.session_state.answers) > current_q_index:
-                    st.success("✅ Answer recorded!")
-                    
-                    st.write("**Your answer:**")
-                    st.write(st.session_state.answers[current_q_index])
-                    
-                    if st.button("➡️ Next Question", key=f"next_{current_q_index}"):
-                        st.session_state.current_question_index += 1
-                        st.session_state.recording_complete = False
-                        
-                        if st.session_state.current_question_index >= len(st.session_state.questions):
-                            st.session_state.current_step = 5
-                        
+            if st.button("Analyze Job Description", type="primary"):
+                if job_profile and job_description:
+                    job_data = job_description_analysis(api_key,job_description, job_profile)
+                    if job_data:
+                        st.session_state.job_data = job_data
+                        st.session_state.difficulty = difficulty
+                        st.session_state.current_step = 2
                         st.rerun()
+                else:
+                    st.warning("Please fill in both job profile and job description.")
+        
+        # Step 2: Show Analysis
+        elif st.session_state.current_step == 2:
+            st.markdown('<div class="step-header">Step 2: Job Analysis Results</div>', unsafe_allow_html=True)
+            
+            if st.session_state.job_data:
+                job_data = st.session_state.job_data
+                
+                # st.markdown('<div class="job-analysis-box">', unsafe_allow_html=True)
+                
+                col1, col2, col3, col4= st.columns(4)
+                
+                with col1:
+                    st.subheader("Basic Info")
+                    st.write(f"**Title:** {job_data.get('job_title', 'N/A')}")
+                    st.write(f"**Seniority:** {job_data.get('seniority_level', 'N/A')}")
+                    st.write(f"**Industry:** {job_data.get('industry', 'N/A')}")
+                    st.write(f"**Experience:** {job_data.get('experience_years', 'N/A')}")
+                with col2:
+                    st.subheader("Technical Skills")
+                    for skill in job_data.get('technical_skills', []):
+                        st.write(f"• {skill}")
+                with col3:    
+                    st.subheader("Soft Skills")  
+                    for skill in job_data.get('soft_skills', []):
+                        st.write(f"• {skill}")
+                with col4:
+                    st.subheader("Key Responsibilities")
+                    for resp in job_data.get('key_responsibilities', []):
+                        st.write(f"• {resp}")
+                
+                st.markdown('</div>', unsafe_allow_html=True)
+                
+                if st.button("✅ Looks Good! Setup Interview", type="primary"):
+                    st.session_state.current_step = 3
+                    st.rerun()
+        
+        # Step 3: Question Setup
+        elif st.session_state.current_step == 3:
+            st.markdown('<div class="step-header">Step 3: Configure Interview Questions</div>', unsafe_allow_html=True)
+            
+            col1, col2, col3 = st.columns(3)
+            
+            with col1:
+                behavioral_count = st.number_input("Behavioral Questions", min_value=0, max_value=10, value=2)
             
             with col2:
-                st.markdown("### 💡 Tips")
-                if question_type == "behavioral":
-                    st.write("• Use STAR method")
-                    st.write("• Give specific examples")
-                    st.write("• Show impact/results")
-                elif question_type == "technical":
-                    st.write("• Think out loud")
-                    st.write("• Explain trade-offs")
-                    st.write("• Consider edge cases")
-                else: 
-                    st.write("• Show problem-solving")
-                    st.write("• Consider stakeholders")
-                    st.write("• Explain your reasoning")
-        
-        else:
-            st.success("🎉 Interview Complete!")
-            st.write("Moving to evaluation...")
-            st.session_state.current_step = 5
-            st.rerun()
-    
-    elif st.session_state.current_step == 5:
-        st.markdown('<div class="step-header">Step 5: Interview Evaluation</div>', unsafe_allow_html=True)
-        
-        if not st.session_state.interview_complete:
-            st.info("Generating detailed feedback for all your answers...")
+                technical_count = st.number_input("Technical Questions", min_value=0, max_value=10, value=2)
             
-            evaluations = []
-            for i, (question, answer) in enumerate(zip(st.session_state.questions, st.session_state.answers)):
-                with st.spinner(f"Evaluating answer {i+1} of {len(st.session_state.answers)}..."):
-                    evaluation = evaluate_answer(
-                        question, answer, st.session_state.job_data, st.session_state.difficulty
-                    )
-                    evaluations.append(evaluation)
+            with col3:
+                situational_count = st.number_input("Situational Questions", min_value=0, max_value=10, value=1)
             
-            st.session_state.evaluations = evaluations
-            st.session_state.interview_complete = True
-        
-        for i, (question, answer, evaluation) in enumerate(
-            zip(st.session_state.questions, st.session_state.answers, st.session_state.evaluations)
-        ):
-            with st.expander(f"Question {i+1}: {question[:50]}..."):
-                st.write("**Your Answer:**")
-                st.write(answer)
+            total_questions = behavioral_count + technical_count + situational_count
+            
+            if total_questions > 0:
+                st.info(f"Total questions: {total_questions} (Estimated time: {total_questions * 2} minutes)")
                 
-                # st.markdown('<div class="evaluation-box">', unsafe_allow_html=True)
-                st.write("**Evaluation:**")
-                st.write(evaluation)
-                st.markdown('</div>', unsafe_allow_html=True)
+                if st.button("Generate Questions & Start Interview", type="primary"):
+                    # Generate all questions
+                    all_questions = []
+                    question_types = []
+                    
+                    if behavioral_count > 0:
+                        behavioral_q = generate_questions(api_key,
+                            st.session_state.job_data, "behavioral", 
+                            behavioral_count, st.session_state.difficulty
+                        )
+                        if behavioral_q:
+                            all_questions.extend(behavioral_q)
+                            question_types.extend(["behavioral"] * len(behavioral_q))
+                    
+                    if technical_count > 0:
+                        technical_q = generate_questions(api_key,
+                            st.session_state.job_data, "technical", 
+                            technical_count, st.session_state.difficulty
+                        )
+                        if technical_q:
+                            all_questions.extend(technical_q)
+                            question_types.extend(["technical"] * len(technical_q))
+                    
+                    if situational_count > 0:
+                        situational_q = generate_questions(api_key,
+                            st.session_state.job_data, "situational", 
+                            situational_count, st.session_state.difficulty
+                        )
+                        if situational_q:
+                            all_questions.extend(situational_q)
+                            question_types.extend(["situational"] * len(situational_q))
+                    
+                    if all_questions:
+                        st.session_state.questions = all_questions
+                        st.session_state.question_types = question_types
+                        st.session_state.answers = []
+                        st.session_state.current_question_index = 0
+                        st.session_state.current_step = 4
+                        st.rerun()
+            else:
+                st.warning("Please select at least one type of question.")
+        
+        # Step 4: Interview Process
+        elif st.session_state.current_step == 4:
+            if st.session_state.current_question_index < len(st.session_state.questions):
+                current_q_index = st.session_state.current_question_index
+                current_question = st.session_state.questions[current_q_index]
+                question_type = st.session_state.question_types[current_q_index]
+                
+                st.markdown("### 🎤 Interview in Progress")
+                
+                progress = (current_q_index + 1) / len(st.session_state.questions)
+                st.progress(progress)
+                st.write(f"Question {current_q_index + 1} of {len(st.session_state.questions)} ({question_type.title()})")
 
-        if st.button("🔄 Start New Interview", type="primary"):
-            for key in list(st.session_state.keys()):
-                del st.session_state[key]
-            st.experimental_rerun()
+                st.markdown(f"### ❓ {current_question}")
+
+                col1, col2 = st.columns([2, 1])
+                
+                with col1:
+                
+                    if len(st.session_state.answers) <= current_q_index:
+                    
+                        if st.button(f"🎤 Record Answer (30 seconds)", key=f"record_{current_q_index}"):
+                            answer = record_audio_streamlit(30)
+                            if answer:
+                                st.session_state.answers.append(answer)
+                                st.session_state.recording_complete = True
+                                st.rerun()  
+                    
+                    if len(st.session_state.answers) > current_q_index:
+                        st.success("✅ Answer recorded!")
+                        
+                        st.write("**Your answer:**")
+                        st.write(st.session_state.answers[current_q_index])
+                        
+                        if st.button("➡️ Next Question", key=f"next_{current_q_index}"):
+                            st.session_state.current_question_index += 1
+                            st.session_state.recording_complete = False
+                            
+                            if st.session_state.current_question_index >= len(st.session_state.questions):
+                                st.session_state.current_step = 5
+                            
+                            st.rerun()
+                
+                with col2:
+                    st.markdown("### 💡 Tips")
+                    if question_type == "behavioral":
+                        st.write("• Use STAR method")
+                        st.write("• Give specific examples")
+                        st.write("• Show impact/results")
+                    elif question_type == "technical":
+                        st.write("• Think out loud")
+                        st.write("• Explain trade-offs")
+                        st.write("• Consider edge cases")
+                    else: 
+                        st.write("• Show problem-solving")
+                        st.write("• Consider stakeholders")
+                        st.write("• Explain your reasoning")
+            
+            else:
+                st.success("🎉 Interview Complete!")
+                st.write("Moving to evaluation...")
+                st.session_state.current_step = 5
+                st.rerun()
+        
+        elif st.session_state.current_step == 5:
+            st.markdown('<div class="step-header">Step 5: Interview Evaluation</div>', unsafe_allow_html=True)
+            
+            if not st.session_state.interview_complete:
+                st.info("Generating detailed feedback for all your answers...")
+                
+                evaluations = []
+                for i, (question, answer) in enumerate(zip(st.session_state.questions, st.session_state.answers)):
+                    with st.spinner(f"Evaluating answer {i+1} of {len(st.session_state.answers)}..."):
+                        evaluation = evaluate_answer(
+                            api_key,question, answer, st.session_state.job_data, st.session_state.difficulty
+                        )
+                        evaluations.append(evaluation)
+                
+                st.session_state.evaluations = evaluations
+                st.session_state.interview_complete = True
+            
+            for i, (question, answer, evaluation) in enumerate(
+                zip(st.session_state.questions, st.session_state.answers, st.session_state.evaluations)
+            ):
+                with st.expander(f"Question {i+1}: {question[:50]}..."):
+                    st.write("**Your Answer:**")
+                    st.write(answer)
+                    
+                    # st.markdown('<div class="evaluation-box">', unsafe_allow_html=True)
+                    st.write("**Evaluation:**")
+                    st.write(evaluation)
+                    st.markdown('</div>', unsafe_allow_html=True)
+
+            if st.button("🔄 Start New Interview", type="primary"):
+                for key in list(st.session_state.keys()):
+                    del st.session_state[key]
+                st.rerun()
+    else:
+        st.info("👆 Please configure your API key above to continue")
 
 if __name__ == "__main__":
     main()
