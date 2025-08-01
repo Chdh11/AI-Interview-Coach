@@ -16,7 +16,7 @@ gtts==2.5.1
 
 # Additional dependencies that whisper needs
 ffmpeg-python==0.2.0
-tiktoken>=0.3.1
+# tiktoken>=0.3.1
 
 # Environment and utilities
 python-dotenv==1.0.0
