@@ -367,19 +367,12 @@ def record_audio_streamlit(duration=30):
         
         st.success("Recording complete! Processing...")
     
-        # Use HuggingFace Transformers Whisper
-        from transformers import pipeline
+        # Use faster-whisper instead of openai-whisper
+        model = WhisperModel("small", device="cpu", compute_type="int8")
+        segments, info = model.transcribe(temp_file.name)
         
-        # Initialize once and cache
-        if 'whisper_pipeline' not in st.session_state:
-            st.session_state.whisper_pipeline = pipeline(
-                "automatic-speech-recognition",
-                model="openai/whisper-small",
-                device=-1  # CPU
-            )
-        
-        result = st.session_state.whisper_pipeline(temp_file.name)
-        text = result["text"]
+        # Extract text from segments
+        text = " ".join([segment.text for segment in segments])
         
         os.unlink(temp_file.name)
         

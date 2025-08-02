@@ -1,14 +1,2 @@
-build-essential
-cmake
-pkg-config
 ffmpeg
-portaudio19-dev
-python3-dev
-gcc
-g++
-make
-libasound2-dev
 libportaudio2
-libsndfile1
-gfortran
-libopenblas-dev
