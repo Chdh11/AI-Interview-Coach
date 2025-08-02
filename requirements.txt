@@ -1,11 +1,11 @@
 streamlit==1.47.1
 google-generativeai==0.5.2
-faster-whisper==0.8.0
+faster-whisper==0.5.1
 sounddevice==0.4.6
-numpy==1.26.4
+numpy==1.24.4
 gtts==2.5.1
-scipy==1.14.1
+scipy==1.11.4
 python-dotenv==1.0.0
-cffi==1.17.1
-pycparser==2.22
-wheel==0.44.0
+cffi==1.16.0
+pycparser==2.21
+wheel==0.42.0
