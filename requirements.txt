@@ -5,7 +5,8 @@ streamlit==1.47.1
 google-generativeai==0.5.2
 
 # Audio and ML dependencies - Fixed versions for Python 3.13 compatibility
-openai-whisper==20240930
+# openai-whisper==20240930
+faster-whisper==1.0.3
 # torch==2.5.1
 # torchaudio==2.5.1
 
