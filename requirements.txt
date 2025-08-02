@@ -6,6 +6,6 @@ google-generativeai==0.5.4
 python-dotenv==1.0.1
 gTTS==2.5.1
 faster-whisper==1.0.1
-torch==2.3.0
+torch==2.2.2
 torchaudio==2.3.0
 typing_extensions==4.12.0
