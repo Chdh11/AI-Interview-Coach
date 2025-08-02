@@ -1,5 +1,5 @@
 import streamlit as st
-import whisper
+# import whisper
 import sounddevice as sd
 import numpy as np
 from scipy.io.wavfile import write
