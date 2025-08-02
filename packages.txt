@@ -1,13 +1,6 @@
+build-essential
+cmake
 pkg-config
-libavformat-dev
-libavcodec-dev
-libavdevice-dev
-libavutil-dev
-libswscale-dev
-libswresample-dev
-libavfilter-dev
-gfortran
-libopenblas-dev
 ffmpeg
 portaudio19-dev
 python3-dev
@@ -17,3 +10,5 @@ make
 libasound2-dev
 libportaudio2
 libsndfile1
+gfortran
+libopenblas-dev
