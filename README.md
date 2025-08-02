@@ -8,8 +8,6 @@
 
 Your personal AI-powered mock interview assistant, designed to help you prepare confidently for real-world job interviews.
 
-🔗 **[Try the App]()**
-
 This app simulates an actual interview environment by asking role-specific questions based on a job description you provide. You can speak your answers out loud, get real-time transcription, and receive AI-generated feedback to improve your structure, clarity, and confidence.
 
 ---
@@ -43,7 +41,11 @@ This app helps you:
 
 ## 💻 UI Preview
 
-> *(Add screenshots here)*
+![Main_page](images/Screenshot 2025-08-01 at 6.15.21 PM.png)
+![job_description_analysis](images/Screenshot 2025-08-01 at 2.44.56 PM.png)
+![question_generation](images/Screenshot 2025-08-01 at 2.46.03 PM.png)
+![interview](images/Screenshot 2025-08-01 at 2.47.19 PM.png)
+![evaluation](images/Screenshot 2025-08-01 at 5.40.23 PM.png)
 
 ---
 
