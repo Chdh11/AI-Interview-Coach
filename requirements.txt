@@ -1,6 +1,6 @@
 # Core dependencies
-python==3.11.9
-pip==25.2
+# python==3.11.9
+# pip==25.2
 streamlit==1.47.1
 google-generativeai==0.5.2
 
