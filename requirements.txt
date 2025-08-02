@@ -6,8 +6,8 @@ google-generativeai==0.5.2
 
 # Audio and ML dependencies - Fixed versions for Python 3.13 compatibility
 openai-whisper==20240930
-torch==2.5.1
-torchaudio==2.5.1
+# torch==2.5.1
+# torchaudio==2.5.1
 
 # Audio processing
 sounddevice==0.4.6
