@@ -1,5 +1,4 @@
 import streamlit as st
-# import whisper
 import sounddevice as sd
 import numpy as np
 from scipy.io.wavfile import write
@@ -13,9 +12,6 @@ import tempfile
 import time
 from io import BytesIO
 from faster_whisper import WhisperModel
-
-load_dotenv()
-# api_key = os.getenv('GEMINI_API_KEY')
 
 st.set_page_config(
     page_title="AI Interview Coach",
@@ -308,41 +304,6 @@ def generate_questions(api_key,job_data, question_type="behavioral", count=5, di
         st.error(f"Error generating questions: {e}")
         return None
 
-# def record_audio_streamlit(duration=30):
-#     try:
-#         st.info(f"🎤 Recording for {duration} seconds... Speak now!")
-        
-#         countdown_placeholder = st.empty()
-#         progress_bar = st.progress(0)
-        
-#         samplerate = 44100
-#         audio_data = sd.rec(int(samplerate * duration), samplerate=samplerate, channels=1, dtype='int16')
-        
-#         for i in range(duration):
-#             countdown_placeholder.text(f"Recording... {duration - i} seconds remaining")
-#             progress_bar.progress((i + 1) / duration)
-#             time.sleep(1)
-        
-#         sd.wait()
-#         countdown_placeholder.empty()
-#         progress_bar.empty()
-        
-#         temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.wav')
-#         write(temp_file.name, samplerate, audio_data)
-        
-#         st.success("Recording complete! Processing...")
-    
-#         model = whisper.load_model("small")
-#         result = model.transcribe(temp_file.name)
-        
-#         os.unlink(temp_file.name)
-        
-#         return result["text"]
-        
-#     except Exception as e:
-#         st.error(f"Error recording audio: {e}")
-#         return None
-
 def record_audio_streamlit(duration=30):
     try:
         st.info(f"🎤 Recording for {duration} seconds... Speak now!")
@@ -367,11 +328,10 @@ def record_audio_streamlit(duration=30):
         
         st.success("Recording complete! Processing...")
     
-        # Use faster-whisper instead of openai-whisper
+        # using faster-whisper instead of openai-whisper
         model = WhisperModel("small", device="cpu", compute_type="int8")
         segments, info = model.transcribe(temp_file.name)
-        
-        # Extract text from segments
+
         text = " ".join([segment.text for segment in segments])
         
         os.unlink(temp_file.name)
