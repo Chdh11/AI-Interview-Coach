@@ -20,7 +20,7 @@ gtts==2.5.1
 
 # Additional dependencies
 ffmpeg-python==0.2.0
-scipy==1.11.4
+scipy>=1.10
 
 # Environment utilities
 python-dotenv==1.0.0
