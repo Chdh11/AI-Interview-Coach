@@ -1,4 +1,6 @@
 pkg-config
+build-essential
+cmake
 libavformat-dev
 libavcodec-dev
 libavdevice-dev
@@ -17,3 +19,6 @@ make
 libasound2-dev
 libportaudio2
 libsndfile1
+libonednn-dev
+libblas-dev
+liblapack-dev
