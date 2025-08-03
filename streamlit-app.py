@@ -69,6 +69,8 @@ if 'current_question_index' not in st.session_state:
     st.session_state.current_question_index = 0
 if 'interview_complete' not in st.session_state:
     st.session_state.interview_complete = False
+if 'tts_enabled' not in st.session_state:
+    st.session_state.tts_enabled = True
 
 jd_analysis_prompt = """
 Analyze this job description and extract key information. Return your response as a valid JSON object with no extra text or formatting.
@@ -405,7 +407,6 @@ Evaluate based on:
         return None
 
 def api_setup():
-    """Method 2: API Key as Initial Setup Step"""
     if 'api_key_validated' not in st.session_state:
         st.session_state.api_key_validated = False
     if 'user_api_key' not in st.session_state:
@@ -433,7 +434,7 @@ def api_setup():
         # col1, col2 = st.columns(2)
         
         # with col1:
-        if st.button("🔐 Validate & Continue", type="primary"):
+        if st.button("Validate & Continue", type="primary"):
             if api_key:
                 try:
                     genai.configure(api_key=api_key)
@@ -463,6 +464,20 @@ def api_setup():
     
     else:
         return st.session_state.user_api_key
+
+def generate_audio_file(text, lang='en'):
+    try:
+        tts = gTTS(text=text, lang=lang, slow=False)
+        
+        audio_buffer = BytesIO()
+        tts.write_to_fp(audio_buffer)
+        audio_buffer.seek(0)
+        
+        return audio_buffer.getvalue()
+        
+    except Exception as e:
+        st.error(f"Error generating audio: {e}")
+        return None
 
 def main():
     api_key = api_setup()
@@ -629,7 +644,18 @@ def main():
                 st.progress(progress)
                 st.write(f"Question {current_q_index + 1} of {len(st.session_state.questions)} ({question_type.title()})")
 
-                st.markdown(f"### ❓ {current_question}")
+                # Question display with TTS option
+                question_col1, question_col2 = st.columns([4, 1])
+                
+                with question_col1:
+                    st.markdown(f"### ❓ {current_question}")
+                
+                with question_col2:
+                    if st.session_state.tts_enabled:
+                        if st.button("🔊 Listen", key=f"tts_{current_q_index}", help="Click to hear the question"):
+                            audio_bytes = generate_audio_file(current_question)
+                            if audio_bytes:
+                                st.audio(audio_bytes, format="audio/mp3", autoplay=True)
 
                 col1, col2 = st.columns([2, 1])
                 
