@@ -8,6 +8,8 @@
 
 Your personal AI-powered mock interview assistant, designed to help you prepare confidently for real-world job interviews.
 
+🔗 [[Try the App]](https://ai-interview-coach-11.streamlit.app/)
+
 This app simulates an actual interview environment by asking role-specific questions based on a job description you provide. You can speak your answers out loud, get real-time transcription, and receive AI-generated feedback to improve your structure, clarity, and confidence.
 
 ---
@@ -48,7 +50,7 @@ This app helps you:
 | Component        | Tech Used                |
 |------------------|--------------------------|
 | Frontend UI      | Streamlit                |
-| Voice Input      | sounddevice + Whisper    |
+| Voice Input      | Streamlit audio input + Whisper    |
 | Speech Output    | gTTS                     |
 | AI Engine        | Gemini API               |
 | Core Logic       | Python                   |
@@ -58,7 +60,7 @@ This app helps you:
 
 ## 🧠 Key Learnings
 
-- **Voice Integration in Web Apps**: Learned to integrate real-time voice recording using `sounddevice`, and send the audio to OpenAI’s **Whisper** for seamless transcription.
+- **Voice Integration in Web Apps**: Learned to integrate real-time voice recording using `sounddevice` (changed to streamlit audio input), and send the audio to OpenAI’s **Whisper** for seamless transcription.
 
 - **Prompt Engineering for Dual Roles & Difficulty Scaling**: Refined prompt structures for two key tasks: generating interview questions and evaluating user responses. Also learned to dynamically scale difficulty using prompt tweaks.
 
@@ -70,8 +72,10 @@ This app helps you:
 
 ## 📈 Future Scope
 
-- Visualize performance trends using graphs and summaries  
-- Store and track user interview history for improvement over time  
+- Store user history, show progress graphs
+- Add emotion analysis or confidence rating
+- Export transcripts + feedback as PDF
+- Replace gTTS with more natural TTS like ElevenLabs
 
 ---
 **Created By: Chhavi Dhankhar**
