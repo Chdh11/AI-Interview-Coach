@@ -306,39 +306,54 @@ def generate_questions(api_key,job_data, question_type="behavioral", count=5, di
         st.error(f"Error generating questions: {e}")
         return None
 
-def record_audio_streamlit(duration=30):
+def record_audio_streamlit():
     try:
-        st.info(f"🎤 Recording for {duration} seconds... Speak now!")
+        # st.info(f"🎤 Recording for {duration} seconds... Speak now!")
         
-        countdown_placeholder = st.empty()
-        progress_bar = st.progress(0)
+        # countdown_placeholder = st.empty()
+        # progress_bar = st.progress(0)
         
-        samplerate = 44100
-        audio_data = sd.rec(int(samplerate * duration), samplerate=samplerate, channels=1, dtype='int16')
+        # samplerate = 44100
+        # audio_data = sd.rec(int(samplerate * duration), samplerate=samplerate, channels=1, dtype='int16')
+        audio_data=st.audio_input("Record your answer")
+
+        # for i in range(duration):
+        #     countdown_placeholder.text(f"Recording... {duration - i} seconds remaining")
+        #     progress_bar.progress((i + 1) / duration)
+        #     time.sleep(1)
         
-        for i in range(duration):
-            countdown_placeholder.text(f"Recording... {duration - i} seconds remaining")
-            progress_bar.progress((i + 1) / duration)
-            time.sleep(1)
+        # sd.wait()
+        # countdown_placeholder.empty()
+        # progress_bar.empty()
         
-        sd.wait()
-        countdown_placeholder.empty()
-        progress_bar.empty()
+        # temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.wav')
+        # write(temp_file.name, samplerate, audio_data)
         
-        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.wav')
-        write(temp_file.name, samplerate, audio_data)
-        
-        st.success("Recording complete! Processing...")
+        # st.success("Recording complete! Processing...")
     
         # using faster-whisper instead of openai-whisper
-        model = WhisperModel("small", device="cpu", compute_type="int8")
-        segments, info = model.transcribe(temp_file.name)
+        # model = WhisperModel("small", device="cpu", compute_type="int8")
+        # segments, info = model.transcribe(temp_file.name)
 
-        text = " ".join([segment.text for segment in segments])
+        # text = " ".join([segment.text for segment in segments])
         
-        os.unlink(temp_file.name)
+        # os.unlink(temp_file.name)
+        if audio_data:
+            st.success("Recording received! Processing...")
+            
+            with tempfile.NamedTemporaryFile(delete=False, suffix='.wav') as tmp_file:
+                tmp_file.write(audio_data.getvalue())
+                tmp_file.flush()
+                
+                model = WhisperModel("small", device="cpu", compute_type="int8")
+                segments, info = model.transcribe(tmp_file.name)
+                text = " ".join([segment.text for segment in segments])
+                
+                os.unlink(tmp_file.name)
+                
+                return text
         
-        return text
+        return None
         
     except Exception as e:
         st.error(f"Error recording audio: {e}")
@@ -663,12 +678,27 @@ def main():
                 
                     if len(st.session_state.answers) <= current_q_index:
                     
-                        if st.button(f"🎤 Record Answer (30 seconds)", key=f"record_{current_q_index}"):
-                            answer = record_audio_streamlit(30)
-                            if answer:
-                                st.session_state.answers.append(answer)
-                                st.session_state.recording_complete = True
-                                st.rerun()  
+                        # if st.button(f"🎤 Record Answer (30 seconds)", key=f"record_{current_q_index}"):
+                        #     answer = record_audio_streamlit(30)
+                        #     if answer:
+                        #         st.session_state.answers.append(answer)
+                        #         st.session_state.recording_complete = True
+                        #         st.rerun()  
+                        recording_method = st.radio(
+                            "Recording method:",
+                            ["🎤 Browser Recording"],
+                            key=f"method_{current_q_index}",
+                            horizontal=True
+                        )
+                        
+                        answer = None
+                        
+                        if recording_method == "🎤 Browser Recording":
+                            answer = record_audio_streamlit()
+                        
+                        if answer:
+                            st.session_state.answers.append(answer)
+                            st.rerun()
                     
                     if len(st.session_state.answers) > current_q_index:
                         st.success("✅ Answer recorded!")
