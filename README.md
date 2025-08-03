@@ -43,6 +43,12 @@ This app helps you:
 
 ## 💻 UI Preview
 
+<img width="1348" height="782" alt="Screenshot 2025-08-03 at 1 25 39 PM" src="https://github.com/user-attachments/assets/2d3ea4e3-e870-4df4-9384-ffd82d6649c1" />
+<img width="1349" height="783" alt="Screenshot 2025-08-03 at 1 26 19 PM" src="https://github.com/user-attachments/assets/ba189d24-ecb9-4b04-bea6-cab5c7bdb98e" />
+<img width="1350" height="783" alt="Screenshot 2025-08-03 at 1 26 50 PM" src="https://github.com/user-attachments/assets/332c8184-045c-4df5-ab8c-4bd2092bd190" />
+<img width="1343" height="785" alt="Screenshot 2025-08-03 at 1 27 32 PM" src="https://github.com/user-attachments/assets/74797b75-46da-43c4-b7d3-4b3114f7c35d" />
+<img width="1353" height="784" alt="Screenshot 2025-08-03 at 1 28 34 PM" src="https://github.com/user-attachments/assets/d806d806-d76c-4dc6-8da7-b4600df69fc6" />
+
 ---
 
 ## 🛠 Tech Stack
